@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h2>Apply for {{ opening.JobName }}</h2>
+  <form method="POST">
+    <input type="hidden" name="opening_id" value="{{ opening.id }}">
+    <div class="form-group">
+      <label for="candidate_id">Candidate ID:</label>
+      <input type="text" class="form-control" id="candidate_id" name="candidate_id">
+    </div>
+    <div class="form-group">
+      <label for="cover_letter">Cover Letter:</label>
+      <textarea class="form-control" id="cover_letter" name="cover_letter"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit Application</button>
+  </form>
+</div>
+{% endblock %}

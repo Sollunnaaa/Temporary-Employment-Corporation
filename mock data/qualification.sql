@@ -1,0 +1,10 @@
+insert into qualification (id, QualificationName) values (1, 'Speech Pathologist');
+insert into qualification (id, QualificationName) values (2, 'Assistant Professor');
+insert into qualification (id, QualificationName) values (3, 'Desktop Support Technician');
+insert into qualification (id, QualificationName) values (4, 'Graphic Designer');
+insert into qualification (id, QualificationName) values (5, 'Compensation Analyst');
+insert into qualification (id, QualificationName) values (6, 'Librarian');
+insert into qualification (id, QualificationName) values (7, 'Automation Specialist III');
+insert into qualification (id, QualificationName) values (8, 'Analog Circuit Design manager');
+insert into qualification (id, QualificationName) values (9, 'Compensation Analyst');
+insert into qualification (id, QualificationName) values (10, 'Database Administrator III');

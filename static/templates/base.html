@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+   <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+       <!-- Latest compiled and minified CSS -->
+       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+       <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+       <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+      <link rel="stylesheet" href="https://drive.google.com/file/d/1NIwNMnzlz762wMpoO8ovSCUiIQdJL37y/view"> <!-- External stylesheet -->
+       <title>
+          {% block title %}
+            Temporary Employement Corp
+          {% endblock %}
+      </title>
+      
+   </head>
+   <body>
+    <nav class="navbar navbar-expand-lg py-3 mb-4 bg-light ">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{{url_for('main')}}">
+          <img src="https://drive.google.com/thumbnail?id=1kV_4ywOcolWtyQxJZmEkfvWv9Oe14Qu5&sz=w1000" alt="Image" width="40" class="logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{{url_for('main')}}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('aboutUs')}}">About Us</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="btn btn-outline-dark" href="{{url_for('logout')}}">Logout</a>
+            </li>
+            <span class="border-right border-secondary ml-4 mr-2"></span>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('employ')}}">Post a Job/Employ</a>
+            </li>
+            <span class="border-right border-secondary ml-4 mr-2"></span>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Courses</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    {% block content %}
+
+    {% endblock %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+
+    <style>
+      #opening-details {
+        position: -webkit-sticky; /* For Safari */
+        position: sticky;
+        top: 20px; /* Adjust based on your header/nav-bar height */
+        z-index: 1000; /* Make sure it sits above other content */
+        background-color: white; /* Optional: for better readability */
+        padding: 10px; /* Optional: for better spacing */
+        border-radius: 10px; /* Optional: for aesthetics */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Optional: for aesthetics */
+        height: auto; /* Adjust if you have a specific height in mind */
+        max-height: 80vh; /* Optional: Prevent it from getting too tall */
+        overflow-y: auto; /* Optional: Add scroll to the content if it overflows */
+      }
+    </style>
+    
+    <script>
+      $(document).ready(function() {
+        $('.clickable').click(function(e) {
+          e.preventDefault();
+          var opening_id = $(this).data('id');
+          $.ajax({
+            url: '/details/' + opening_id,
+            type: 'GET',
+            success: function(data) {
+              $('#opening-details').html(
+                '<div class="card">' +
+                '<div class="card-body" style="height: auto; overflow-y: auto;">' + // Ensure this div also respects the new layout
+                '<h2 class="card-title">' + data.JobName + '</h2>' +
+                '<h5 class="card-text">' + data.CompanyId + '\n</h5>' +
+                '<h5 class="card-text">' + data.Address + '</h5>' +
+                '<h5 class="card-text">PHP' + data.HourlyPay + '/Hour</h5>' + '<hr>' +
+                '<h4 class="card-title">Job Details</h4>' +
+                '<p class="card-text">' + data.JobDetails + '</p>' +
+                '<p class="card-text">From: ' + data.Startdate + '</p>' +
+                '<p class="card-text">To: ' + data.Enddate + '</p>' + '<hr>' +
+                '<h4 class="card-title">Work Time</h4>' +
+                '<p class="card-text">Shift: ' + data.JobShift + ' / Hour</p>' +
+                '<p class="card-text">Type of Job: ' + data.JobType + '</p>' + '<hr>' +
+                '<h4 class="card-title">Qualifications Required</h4>' +
+                '<p class="card-text">' + data.QualificationId + '</p>' +
+                '<p class="card-text">' + data.Code + '</p>' +
+                '<button class="btn btn-primary apply-btn" data-opening-id="' + data.id + '" onclick="applyForJob(' + data.id + ')">Apply Now</button>' +
+                '</div>' +
+                '</div>'
+              );
+            },
+            error: function(xhr, status, error) {
+              alert('Error: ' + error);
+            }
+          });
+        });
+      });
+    
+      function applyForJob(openingId) {
+        window.location.href = '/apply/' + openingId;
+      }
+    </script>
+    
+    
+  <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+ 
+
+   </body>
+   
+   <style type="text/css">
+      body {
+      background-color: #e9e3e372;
+      color: black
+      }
+      #fixed-button{
+          position: fixed;
+          bottom: 10px;
+          right: 2vw;
+          width: 5vw;
+          z-index: 1000;
+          /* Ensure button is above other contents */
+      } 
+
+      th:first-child{
+        border-top-left-radius: 10px;
+      }
+
+      th:last-child{
+        border-top-right-radius: 10px;
+      }
+      
+      .navbar ul li a{
+        color: black;
+      }
+
+      li.borderless {
+        border-top: 0px;
+        border-bottom: 0px;
+
+      .row{
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+      }
+
+      }
+   </style>
+   <script>
+      function submitForm(formId) {
+        document.getElementById(formId).submit();
+      }
+
+      function refreshPage(){
+        window.location.reload()
+      }
+   </script>
+</html>

@@ -1,0 +1,282 @@
+{% extends 'base.html' %}
+
+{% block title %}
+TEC: Post a Job
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-3">
+    <h1 class="display-1">
+        <strong>Let's make your next great hire.</strong>
+        <em>Fast.</em>
+    </h1>
+
+    <!-- Button trigger modal for posting a job -->
+    <button type="button" class="btn btn-primary mb-3 mt-4" data-bs-toggle="modal" data-bs-target="#jobPostModal">
+        Post New Job
+    </button>
+
+    <!-- Button trigger modal for archiving a job -->
+    <button type="button" class="btn btn-secondary mt-2" data-bs-toggle="modal" data-bs-target="#arcModal">
+        Archive
+    </button>
+
+    <!-- Search Field for finding a job -->
+    <form action="{{url_for('search_jobs')}}" method="GET">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search for a job" name="query" aria-label="Search for a job" aria-describedby="button-addon2" value="{{ query }}">            
+            <!-- Filter Field for posted job -->
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    Filter
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" href="{{ url_for('employ', sort='newest') }}">Newest - Oldest</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('employ', sort='oldest') }}">Oldest - Newest</a></li>
+                </ul>
+            </div>
+        </div>
+    </form>
+
+    <!-- Full screen modal -->
+    <div class="modal fade" id="arcModal" tabindex="-1" aria-labelledby="arcModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="arcModalLabel">Archived Jobs</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        {% for job in archived_jobs %}
+                        <li class="d-flex justify-content-between align-items-center">
+                            {{ job.title }} - {{ job.location }}
+                            <button class="btn btn-link p-0" title="Restore Job" data-bs-target="#restoreJobModal" data-bs-toggle="modal" data-bs-dismiss="modal" data-job-id="{{ job.id }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 1 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                                </svg>
+                            </button>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal for posting a new job -->
+    <div class="modal fade" id="jobPostModal" tabindex="-1" role="dialog" aria-labelledby="jobPostModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="jobPostModalLabel">Post a Job</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ url_for('employ') }}" method="POST">
+                        <div class="mb-3">
+                            
+                        </div>
+                        <div class="mb-3">
+                            <label for="jobDescription" class="form-label">Job Description</label>
+                            <textarea class="form-control" id="jobDescription" name="jobDescription" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="jobLocation" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="jobLocation" name="jobLocation" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="jobSalary" class="form-label">Salary</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₱</span>
+                                <input type="number" class="form-control" id="jobSalary" name="jobSalary" min="0" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Job</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Displaying Jobs in Cards -->
+    <div class="row">
+        {% for job in jobs %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title text-truncate mb-0">{{ job.JobName }}</h5>
+                        <button class="btn btn-link text-danger p-0" title="Delete Job" data-bs-toggle="modal" data-bs-target="#deleteJobModal" data-job-id="{{ job.id }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 20 20">
+                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <h6 class="card-subtitle mb-2 mt-1 text-muted text-truncate">{{ job.Address }}</h6>
+                    <p class="card-text text-truncate">{{ job.JobDescription }}</p>
+                    <button type="button" class="card-link mt-auto" data-bs-toggle="modal" data-bs-target="#jobDetailsModal"
+                       data-title="{{ job.JobName }}" data-description="{{ job.JobDescription }}"
+                       data-location="{{ job.Address }}" data-salary="{{ job.HourlyPay }}">
+                       Details
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Delete Job Confirmation Modal -->
+    <div class="modal fade" id="deleteJobModal" tabindex="-1" aria-labelledby="deleteJobModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteJobModalLabel">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this job?
+                </div>
+                <div class="modal-footer">
+                    <form id="deleteJobForm" action="" method="post">
+                        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Restore Job Confirmation Modal -->
+    <div class="modal fade" id="restoreJobModal" tabindex="-1" aria-labelledby="restoreJobModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="restoreJobModalLabel">Confirm Restoration</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to restore this job?
+                </div>
+                <div class="modal-footer">
+                    <form id="restoreJobForm" action="" method="post">
+                        <button type="submit" class="btn btn-success">Yes, Restore</button>
+                        <button type="button" class="btn btn-secondary" data-bs-target="#arcModal" data-bs-toggle="modal" data-bs-dismiss="modal">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Job Details Modal -->
+    <div class="modal fade" id="jobDetailsModal" tabindex="-1" role="dialog" aria-labelledby="jobDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="jobDetailsModalLabel">Job Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="jobTitleDetail"></p>
+                    <p id="jobDescriptionDetail" style="white-space: pre-wrap; word-wrap: break-word;"></p>
+                    <p id="jobLocationDetail"></p>
+                    <p id="jobSalaryDetail"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success">Edit Details</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('.card-link').forEach(item => {
+        item.addEventListener('click', function() {
+            var title = this.getAttribute('data-title');
+            var description = this.getAttribute('data-description');
+            var location = this.getAttribute('data-location');
+            var salary = this.getAttribute('data-salary');
+
+            document.getElementById('jobTitleDetail').innerText = 'Title: ' + title;
+            document.getElementById('jobDescriptionDetail').innerText = 'Description: ' + description;
+            document.getElementById('jobLocationDetail').innerText = 'Location: ' + location;
+            document.getElementById('jobSalaryDetail').innerText = 'Salary: ₱' + salary;
+        });
+    });
+
+    document.querySelectorAll('[data-bs-target="#deleteJobModal"]').forEach(button => {
+        button.addEventListener('click', function() {
+            const jobId = this.getAttribute('data-job-id');
+            const form = document.getElementById('deleteJobForm');
+            form.action = `/delete_job/${jobId}`;
+        });
+    });
+    
+    document.querySelectorAll('[data-bs-target="#restoreJobModal"]').forEach(button => {
+        button.addEventListener('click', function() {
+            const jobId = this.getAttribute('data-job-id');
+            const form = document.getElementById('restoreJobForm');
+            form.action = `/restore_job/${jobId}`;  // Ensure this template string syntax is correctly forming the URL
+        });
+    });
+
+</script>
+
+<style>
+    .card {
+        height: 50px; /* Fixed height for cards */
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .modal-body {
+        max-height: 600px; /* Adjust as needed */
+        overflow-y: auto;
+    }
+
+    ul.list-unstyled {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    }
+
+    ul.list-unstyled li {
+        border-bottom: 1px solid #ddd;  /* Adds a subtle line between items */
+        padding: 10px 0;                /* Adds padding for spacing */
+    }
+
+    ul.list-unstyled li:last-child {
+        border-bottom: none;            /* Removes border from the last item */
+    }
+
+    .btn-link {
+        margin-right: 10px;             /* Ensures some space on the right of the button */
+    }
+
+</style>
+
+{% endblock %}

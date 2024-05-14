@@ -1,0 +1,10 @@
+insert into company (id, CompanyName, CompanyAddress, CompanyPhoneNo, CompanyEmail) values (1, 'Gevee', '192 David Point', '361 786 5041', 'rainslee0@theguardian.com');
+insert into company (id, CompanyName, CompanyAddress, CompanyPhoneNo, CompanyEmail) values (2, 'Trudeo', '431 Dryden Trail', '258 528 6486', 'napedaile1@bluehost.com');
+insert into company (id, CompanyName, CompanyAddress, CompanyPhoneNo, CompanyEmail) values (3, 'Tanoodle', '0935 Leroy Trail', '413 256 4503', 'pkleint2@google.com.hk');
+insert into company (id, CompanyName, CompanyAddress, CompanyPhoneNo, CompanyEmail) values (4, 'Browsetype', '145 Center Place', '210 568 4158', 'aashborne3@columbia.edu');
+insert into company (id, CompanyName, CompanyAddress, CompanyPhoneNo, CompanyEmail) values (5, 'Kaymbo', '232 Armistice Circle', '645 193 8489', 'aiacovacci4@chicagotribune.com');
+insert into company (id, CompanyName, CompanyAddress, CompanyPhoneNo, CompanyEmail) values (6, 'Babbleblab', '2 Dakota Lane', '319 330 4151', 'gblaker5@ebay.com');
+insert into company (id, CompanyName, CompanyAddress, CompanyPhoneNo, CompanyEmail) values (7, 'Yombu', '812 Nancy Trail', '441 413 9637', 'fshepherd6@nydailynews.com');
+insert into company (id, CompanyName, CompanyAddress, CompanyPhoneNo, CompanyEmail) values (8, 'Realmix', '376 Main Way', '480 495 9900', 'zomalley7@cnn.com');
+insert into company (id, CompanyName, CompanyAddress, CompanyPhoneNo, CompanyEmail) values (9, 'Gevee', '0 Gulseth Crossing', '853 599 9750', 'cbode8@ocn.ne.jp');
+insert into company (id, CompanyName, CompanyAddress, CompanyPhoneNo, CompanyEmail) values (10, 'Gabtype', '3 Portage Way', '526 950 9456', 'crosenfield9@mail.ru');
